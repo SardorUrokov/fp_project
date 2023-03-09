@@ -12,8 +12,8 @@ public class FishService implements Runnable {
     public static Random random = new Random();
 
     public static void start() {
-        int men = random.nextInt(10);
-        int women = random.nextInt(10);
+        int men = random.nextInt(8);
+        int women = random.nextInt(8);
 
         for (int i = 0; i < men; i++) {
             fishList.add(new Fish(generateRandomName(), generateRandomNumber(1), true, random.nextInt(50)));
@@ -22,19 +22,19 @@ public class FishService implements Runnable {
             fishList.add(new Fish(generateRandomName(), generateRandomNumber(1), false, random.nextInt(50)));
         }
 
-        int i = 1;
-        setFishList();
-        for (Fish fish : fishList) {
-            new Thread(fish).start();
-            System.out.println((++i) + ". " + fishList.get(i));
-        }
-
+//        int i = 1;
 //        setFishList();
-//        for (int i = 0; i < fishList.size(); ++i) {
-//            new Thread(fishList.get(i)).start();
-//
-//            System.out.println((i++) + ". " + fishList.get(i));
-//        }
+//        for (Fish fish : fishList) {
+//            new Thread(fish).start();
+//            System.out.println((++i) + ". " + fishList.get(i));
+//    }
+
+        setFishList();
+        for (int i = 0; i < fishList.size(); ++i) {
+            new Thread(fishList.get(i)).start();
+
+            System.out.println((i + 1) + ". " + fishList.get(i));
+        }
 
     }
 
@@ -75,7 +75,7 @@ public class FishService implements Runnable {
             char c = chars[random.nextInt(chars.length)];
             sb.append(c);
         }
-        return sb.toString();
+        return (sb.toString()).toUpperCase();
     }
 
     public static int generateRandomNumber(int numOfDigits) {
@@ -131,7 +131,6 @@ public class FishService implements Runnable {
 
     @Override
     public void run() {
-         createGeneration();
-
+        createGeneration();
     }
 }

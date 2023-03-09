@@ -1,7 +1,5 @@
 package com.company;
 
-import java.util.Objects;
-
 import static com.company.FishService.*;
 import static com.company.FishService.createGeneration;
 
@@ -11,7 +9,7 @@ class Fish implements Runnable {
     private int currentLocation;
     private boolean isMale;
     private int lifeTime;
-    private float realLifeTime = lifeTime;
+    private float realLifeTime;
 
     public Fish() {
     }
@@ -40,19 +38,19 @@ class Fish implements Runnable {
                 this.lifeTime--;
 
                 for (Fish thisFish : fishList) {
-                    if (thisFish.getLifeTime() > 0) {
+                    if (thisFish != null && thisFish.getLifeTime() > 0) {
 
                         int prevLoc = thisFish.currentLocation;
                         int randomLoc = generateRandomNumber(1);
 
                         if (prevLoc != randomLoc)
                             thisFish.setCurrentLocation(randomLoc);
-                    } else {
-                        continue;
+                        else
+                            thisFish.setCurrentLocation(generateRandomNumber(1));
                     }
                 }
 
-                System.out.println("Current Location Updated! - -> name: " + this.name
+                System.out.println("Current Location Updated! - -> name: " + (this.name)
                         + ", current_location: " + this.currentLocation
                         + ", life time: " + this.lifeTime
                         + ", gender: " + this.isMale);
@@ -62,7 +60,6 @@ class Fish implements Runnable {
             }
 
             createGeneration();
-
         }
 
         if (isMale) {
