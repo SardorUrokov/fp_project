@@ -12,8 +12,8 @@ public class FishService implements Runnable {
     public static Random random = new Random();
 
     public static void start() {
-        int men = random.nextInt(8);
-        int women = random.nextInt(8);
+        int men = random.nextInt(6);
+        int women = random.nextInt(6);
 
         for (int i = 0; i < men; i++) {
             fishList.add(new Fish(generateRandomName(), generateRandomNumber(1), true, random.nextInt(50)));
@@ -22,13 +22,6 @@ public class FishService implements Runnable {
             fishList.add(new Fish(generateRandomName(), generateRandomNumber(1), false, random.nextInt(50)));
         }
 
-//        int i = 1;
-//        setFishList();
-//        for (Fish fish : fishList) {
-//            new Thread(fish).start();
-//            System.out.println((++i) + ". " + fishList.get(i));
-//    }
-
         setFishList();
         for (int i = 0; i < fishList.size(); ++i) {
             new Thread(fishList.get(i)).start();
@@ -36,6 +29,7 @@ public class FishService implements Runnable {
             System.out.println((i + 1) + ". " + fishList.get(i));
         }
 
+        System.out.println("\n");
     }
 
     public static void createGeneration() {
@@ -54,6 +48,12 @@ public class FishService implements Runnable {
 
                 newFish = new Fish(generateRandomName(), generateRandomNumber(1), random.nextBoolean(), random.nextInt(50));
                 fishList.add(newFish);
+
+                if (newFish.isMale())
+                    menList.add(newFish);
+                else
+                    womenList.add(newFish);
+
                 new Thread(newFish).start();
 
                 System.out.println("\nNEW FISH - -> name: " + newFish.getName()

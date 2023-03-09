@@ -21,13 +21,6 @@ class Fish implements Runnable {
         this.lifeTime = lifeTime;
     }
 
-    public Fish(String name, int currentLocation, boolean isMale, float realLifeTime) {
-        this.name = name;
-        this.currentLocation = currentLocation;
-        this.isMale = isMale;
-        this.realLifeTime = realLifeTime;
-    }
-
     @Override
     public void run() {
         realLifeTime = lifeTime;
@@ -38,6 +31,14 @@ class Fish implements Runnable {
                 this.lifeTime--;
 
                 for (Fish thisFish : fishList) {
+                    /*
+                  ListIterator<Fish> it = fishList.listIterator();
+                if (it.hasNext()) {
+                    Fish item = it.next();
+
+                    }
+                 */
+
                     if (thisFish != null && thisFish.getLifeTime() > 0) {
 
                         int prevLoc = thisFish.currentLocation;
@@ -48,6 +49,7 @@ class Fish implements Runnable {
                         else
                             thisFish.setCurrentLocation(generateRandomNumber(1));
                     }
+//                }
                 }
 
                 System.out.println("Current Location Updated! - -> name: " + (this.name)
@@ -62,11 +64,14 @@ class Fish implements Runnable {
             createGeneration();
         }
 
-        if (isMale) {
-            System.err.println("\nFISH DEAD - -> name: " + Fish.this.name + ", gender: " + true + "\n");
-        } else {
-            System.err.println("\nFISH DEAD - -> name: " + Fish.this.name + ", gender: " + false + "\n");
-        }
+        Fish deadFish = Fish.this;
+        fishList.remove(deadFish);
+
+        if (deadFish.isMale)
+            System.err.println("\nFISH DEAD - -> name: " + Fish.this.name + ", gender: " + true + ";  - -> REMOVED" + "\n");
+        else
+            System.err.println("\nFISH DEAD - -> name: " + Fish.this.name + ", gender: " + false + ";  - -> REMOVED" + "\n");
+
     }
 
 
@@ -117,7 +122,6 @@ class Fish implements Runnable {
                 ", currentLocation=" + currentLocation +
                 ", isMale=" + isMale +
                 ", lifeTime=" + lifeTime +
-                ", realLifeTime=" + realLifeTime +
                 '}';
     }
 }
