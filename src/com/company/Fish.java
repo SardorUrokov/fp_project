@@ -23,36 +23,30 @@ class Fish implements Runnable {
 
     @Override
     public void run() {
-        realLifeTime = lifeTime;
 
-        while (this.lifeTime > 0) {
+        realLifeTime = lifeTime;
+        while (this.lifeTime > 0 && !(fishList.size() >= aquariumSize)) {
             try {
-                Thread.sleep(5000);
+                Thread.sleep(3000);
                 this.lifeTime--;
 
-                for (Fish thisFish : fishList) {
-                    /*
-                  ListIterator<Fish> it = fishList.listIterator();
-                if (it.hasNext()) {
-                    Fish item = it.next();
-
-                    }
-                 */
+                for (int i = 0; i < fishList.size(); i++) {
+                    Fish thisFish = fishList.get(i);
 
                     if (thisFish != null && thisFish.getLifeTime() > 0) {
 
                         int prevLoc = thisFish.currentLocation;
-                        int randomLoc = generateRandomNumber(1);
+                        int randomLoc = RandomValueUtils.generateRandomNumber(1);
 
-                        if (prevLoc != randomLoc)
+                        if (prevLoc != randomLoc) {
                             thisFish.setCurrentLocation(randomLoc);
-                        else
-                            thisFish.setCurrentLocation(generateRandomNumber(1));
+                        } else {
+                            thisFish.setCurrentLocation(RandomValueUtils.generateRandomNumber(1));
+                        }
                     }
-//                }
                 }
 
-                System.out.println("Current Location Updated! - -> name: " + (this.name)
+                System.out.println("Fish's Location Updated! - -> name: " + (this.name)
                         + ", current_location: " + this.currentLocation
                         + ", life time: " + this.lifeTime
                         + ", gender: " + this.isMale);
@@ -63,15 +57,18 @@ class Fish implements Runnable {
 
             createGeneration();
         }
+        checkAquarium();
 
         Fish deadFish = Fish.this;
         fishList.remove(deadFish);
+        String count = countAliveFish();
 
-        if (deadFish.isMale)
-            System.err.println("\nFISH DEAD - -> name: " + Fish.this.name + ", gender: " + true + ";  - -> REMOVED" + "\n");
-        else
-            System.err.println("\nFISH DEAD - -> name: " + Fish.this.name + ", gender: " + false + ";  - -> REMOVED" + "\n");
-
+        if (deadFish.isMale) {
+            System.err.println("\nFISH DEAD - -> name: " + Fish.this.name + ", gender: " + true + ";  - -> REMOVED" + count + "\n");
+        } else {
+            System.err.println("\nFISH DEAD - -> name: " + Fish.this.name + ", gender: " + false + ";  - -> REMOVED" + count + "\n");
+        }
+        Thread.currentThread().stop();
     }
 
 
