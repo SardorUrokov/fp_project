@@ -8,7 +8,7 @@ public class FishService {
     public static List<Fish> menList = new ArrayList<>();
     public static List<Fish> womenList = new ArrayList<>();
     public static Random random = new Random();
-    public static final int aquariumSize = 20; //akvarium maximum 20ta baliqni sig'dira oladi
+    public static final int aquariumSize = 30; //akvarium maximum 30ta baliqni sig'dira oladi
 
     public static void start() {
         int men = random.nextInt(8);
@@ -24,9 +24,10 @@ public class FishService {
             fishList.add(new Fish(RandomValueUtils.generateRandomName(), RandomValueUtils.generateRandomNumber(1), false, random.nextInt(50)));
         }
 
-        setFishList();
+        setFishList(); //baliqlarni jinsi bo'yicha listga qo'shib chiqadi
+
         for (int i = 0; i < fishList.size(); ++i) {
-            new Thread(fishList.get(i)).start();
+            new Thread(fishList.get(i)).start(); //baliqlarni yangi Thread da run qila boshlaydi
 
             System.out.println((i + 1) + ". " + fishList.get(i));
         }
@@ -80,13 +81,14 @@ public class FishService {
 
     public static boolean isDurable(Fish manFish, Fish womanFish) {
 
-        boolean isAbleBody = womanFish.getRealLifeTime() - womanFish.getLifeTime() >= 4;
+        //nasl bo'lishi uchun ikkala baliqlar ham kamida 4 birlik yashagan bo'lishi kerak. chunki yangi tug'ilgan lichinka nasl qoldirolmaydi
+        boolean isDurableWoman = womanFish.getRealLifeTime() - womanFish.getLifeTime() >= 4;
+        boolean isDurableMan = manFish.getRealLifeTime() - manFish.getLifeTime() >= 4;
 
-        boolean isDurable = manFish.getRealLifeTime() - manFish.getLifeTime() >= 4;
-
+        //nasl bo'lishi uchun har ikkala baliqlar bir joyda bo'lishi kerak. ya'ni location har ikkala baliqda bir xil bo'lishi kk.
         boolean isSameLocation = (manFish.getCurrentLocation()) == (womanFish.getCurrentLocation());
 
-        return isAbleBody && isDurable && isSameLocation;
+        return isDurableMan && isDurableWoman && isSameLocation;
 
     }
 

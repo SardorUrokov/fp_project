@@ -9,7 +9,7 @@ class Fish implements Runnable {
     private int currentLocation;
     private boolean isMale;
     private int lifeTime;
-    private float realLifeTime;
+    private int realLifeTime; //nasl qoldirishda realLifeTime dan lifeTime ni ayirib nechchi birlik yashaganini aniqlash uchun
 
     public Fish() {
     }
@@ -25,6 +25,7 @@ class Fish implements Runnable {
     public void run() {
 
         realLifeTime = lifeTime;
+
         while (this.lifeTime > 0 && !(fishList.size() >= aquariumSize)) {
             try {
                 Thread.sleep(3000);
@@ -33,11 +34,13 @@ class Fish implements Runnable {
                 for (int i = 0; i < fishList.size(); i++) {
                     Fish thisFish = fishList.get(i);
 
+                    //listdagi object null emasligini va baliq tirik ekanligini tekshiradi
                     if (thisFish != null && thisFish.getLifeTime() > 0) {
 
                         int prevLoc = thisFish.currentLocation;
                         int randomLoc = RandomValueUtils.generateRandomNumber(1);
 
+                        //yangi location set qilishdan oldin avvalgi va yangi locationlarini bir xil emasligini tekshiradi
                         if (prevLoc != randomLoc) {
                             thisFish.setCurrentLocation(randomLoc);
                         } else {
@@ -46,6 +49,7 @@ class Fish implements Runnable {
                     }
                 }
 
+                //baliqning location ni o'zgargandagi message
                 System.out.println("Fish's Location Updated! - -> name: " + (this.name)
                         + ", current_location: " + this.currentLocation
                         + ", life time: " + this.lifeTime
@@ -60,13 +64,15 @@ class Fish implements Runnable {
         checkAquarium();
 
         Fish deadFish = Fish.this;
-        fishList.remove(deadFish);
+        fishList.remove(deadFish); //o'lgan baliqni umumiy list(ya'ni aquarium)dan remove qilish
         String count = countAliveFish();
 
         if (deadFish.isMale) {
             System.err.println("\nFISH DEAD - -> name: " + Fish.this.name + ", gender: " + true + ";  - -> REMOVED" + count + "\n");
+            menList.remove(deadFish); //jinsi bp'yicha listdan remove qilish
         } else {
             System.err.println("\nFISH DEAD - -> name: " + Fish.this.name + ", gender: " + false + ";  - -> REMOVED" + count + "\n");
+            womenList.remove(deadFish);
         }
         Thread.currentThread().stop();
     }
@@ -108,7 +114,7 @@ class Fish implements Runnable {
         return realLifeTime;
     }
 
-    public void setRealLifeTime(float realLifeTime) {
+    public void setRealLifeTime(int realLifeTime) {
         this.realLifeTime = realLifeTime;
     }
 
